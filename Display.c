@@ -125,7 +125,15 @@ int main()
     component_t test_buff;
     // buffer_create_quad(&test_buff);
     buffer_create_ship(&test_buff);
+    component_t test2_buff;
+    buffer_create_quad(&test2_buff);
 
+    component_t *componen2 = (component_t*) malloc(sizeof(component_t));
+    component_init(componen2);
+    componen2->shader = &test_shader;
+    component_add_component(componen2, &test_tex);
+    component_add_component(componen2, &test2_buff);
+    
     component_t *component = (component_t*)malloc(sizeof(component_t));
     component_init(component);
     component->shader = &test_shader;
@@ -133,12 +141,17 @@ int main()
     component_add_component(component, &test_tex);
 
     scene_add_component(scene, component);
+    scene_add_component(scene, componen2);
+
+    componen2->position[1] = 1.0f;
+    
 
     display_loop(&d);
     shader_destroy_shader(&test_shader);
     component_destroy(&test_buff);
     display_destroy(&d);
 
-    
+    component_destroy(&test_tex);
+    component_destroy(&test2_buff);
     return 0;
 }

@@ -2,6 +2,7 @@
 #include <string.h>
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 void lmath_translate_matrix(float position[3], float mat[16])
 {
     memset(mat, 0, sizeof(float) * 16);
@@ -106,6 +107,12 @@ float lmath_length(float *vec, uint8_t d)
 {
     float sum_pow_2 = 0.0f;
     for (uint8_t i = 0; i < d; ++i) sum_pow_2 += vec[i] * vec[i];
+    return sqrtf(sum_pow_2);
+}
+float lmath_length_pow2(float *vec, uint8_t d)
+{
+    float sum_pow_2 = 0.0f;
+    for (uint8_t i = 0; i < d; ++i) sum_pow_2 += vec[i] * vec[i];
     return sum_pow_2;
 }
 
@@ -141,3 +148,13 @@ void lmath_print_vector(float *vec, uint8_t d)
     printf("\n\\-----\\\n");
 }
 
+
+float lmath_distance(float *first, float *second, uint8_t d)
+{
+    float *cp = (float*)malloc(sizeof(float) * d);
+    memcpy(cp, first, sizeof(float) * d);
+    for (uint8_t i = 0; i < d; ++i) cp[i] -= second[i];
+    float dist = lmath_length(cp, d);
+    free(cp);
+    return dist;
+}

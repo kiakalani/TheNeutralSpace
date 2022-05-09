@@ -30,7 +30,7 @@ void component_destroy_components(component_t*);
 
 void component_get_transformation_mat(component_t*, float*);
 
-
+void component_face_component(component_t*, component_t*);
 // DONE TO BE TESTED
 
 #endif

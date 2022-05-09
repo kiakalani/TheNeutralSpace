@@ -7,7 +7,6 @@
 void __texture_render(component_t *comp, shader_t *shader)
 {
     texture_components_t *tcomps = (texture_components_t*)comp->other_components;
-    printf("ADDRESS IS %u AND TEXTURE IS %u\n", glGetUniformLocation(shader->program_id, "tex_add"), tcomps->texture_id);
     
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, tcomps->texture_id);

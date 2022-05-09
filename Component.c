@@ -5,6 +5,8 @@
 #include "Shader.h"
 #include <GL/glew.h>
 #include <stdio.h>
+#include <math.h>
+#include "Display.h"
 
 void __component_sample_render(component_t *comp, shader_t *sh)
 {
@@ -20,6 +22,7 @@ void __component_sample_render(component_t *comp, shader_t *sh)
     {
         if (comp->components[i]->render) comp->components[i]->render(comp->components[i], comp->shader);
     }
+    component_face_component(comp, display->current_scene->camera);
 
 }
 
@@ -109,4 +112,30 @@ void component_get_transformation_mat(component_t *comp, float *mat)
 
 }
 
+
+void component_face_component(component_t *first, component_t *second)
+{
+
+
+    float forward[3];
+    memcpy(forward, first->position, sizeof(float) * 3);
+    lmath_multiply_vector_float(forward, -1.0f);
+    lmath_add_vectors(forward, second->position);
+    lmath_normalize(forward, 3);
+
+    float rot_axis[3];
+    float fwd_vec[3];
+    memset(fwd_vec, 0, sizeof(float) * 3);
+    fwd_vec[2] = 1.0f;
+    lmath_cross_product(fwd_vec, forward, rot_axis);
+
+    float dot = lmath_dot_product(fwd_vec, forward);
+    first->orientation[0] = dot + 1.0f;
+    memcpy(&(first->orientation[1]), rot_axis, sizeof(float) * 3);
+
+    lmath_normalize(first->orientation, 4);
+
+    lmath_print_vector(first->orientation, 4);
+
+}
 
