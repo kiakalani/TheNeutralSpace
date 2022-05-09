@@ -1,0 +1,13 @@
+#version 330 core
+uniform sampler2D tex_add;
+in vec2 uv_interp;
+in vec3 vert_pos;
+
+in vec3 view_pos;
+void main()
+{
+    vec4 pixels = texture(tex_add, uv_interp);
+    
+    gl_FragColor = pixels;
+    
+}

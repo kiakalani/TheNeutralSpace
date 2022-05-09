@@ -1,0 +1,21 @@
+#version 330 core
+
+in vec3 vertex;
+in vec2 uv;
+
+uniform mat4 view_mat;
+uniform mat4 transformation_mat;
+uniform mat4 projection_mat;
+
+
+out vec2 uv_interp;
+out vec3 vert_pos;
+out vec3 view_pos;
+void main()
+{
+    gl_Position = projection_mat * view_mat *  transformation_mat * vec4(vertex, 1.0);
+    uv_interp = vec2(uv.x, 1.0-uv.y);
+    vert_pos = gl_Position.xyz;
+
+    view_pos = vec3(view_mat[3][0], view_mat[3][1], view_mat[3][2]);
+}
