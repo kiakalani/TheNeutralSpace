@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include "Buffer.h"
 #include "Texture.h"
+#include "Camera.h"
+#include "LMath.h"
 display_t *display;
 void __display_resize(GLFWwindow *window, int w, int h)
 {
@@ -69,7 +71,20 @@ void display_init(display_t *display, const uint16_t w, const uint16_t h, const 
     __display_setup(display);
 
 }
+void __rotate_object(component_t *comp)
+{
+    // float orientation[4];
+    // lmath_angle_axis_quat(0.01f, 1.0f, 0.0f, 0.0f, orientation);
+    // float c_orientation[4];
+    // memcpy(c_orientation, comp->orientation, sizeof(float) * 4);
 
+    // lmath_quat_multiply(orientation, c_orientation, comp->orientation);
+    // lmath_normalize(comp->orientation, 4);
+    // lmath_print_vector(comp->orientation, 4);
+    //comp->position[2] += 0.01f;
+    //printf("WORKING\n");
+    lmath_print_vector(comp->position, 3);
+}
 
 void display_loop(display_t *display)
 {
@@ -80,7 +95,7 @@ void display_loop(display_t *display)
         display->delta_time = cur_time - display->last_tick;
         if (display->delta_time <= 0.0f) display->delta_time = 0.002;
         
-        glClearColor(1.0f, 1.0f, 0.0f, 0.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         scene_iterate_components(display->current_scene);
         glfwPollEvents();
@@ -144,7 +159,21 @@ int main()
     scene_add_component(scene, componen2);
 
     componen2->position[1] = 1.0f;
-    
+
+    shader_t scr_sh;
+    shader_init_shader(&scr_sh, "../shaders/samplescreen/vert", "../shaders/samplescreen/frag");
+    component_t *screen_eff = (component_t*)malloc(sizeof(component_t));
+    component_init(screen_eff);
+    screen_eff->shader = &scr_sh;
+    component_add_component(screen_eff, &test2_buff);
+
+    scene_add_component(scene, screen_eff);
+
+    scene->camera->position[2] = 5.0f;
+    camera_follow_object(scene->camera, component);
+    componen2->update = __rotate_object;
+
+    lmath_angle_axis_quat(-3.141522f * 0.2f, 1.0f, 0.0f, 0.0f, component->orientation);
 
     display_loop(&d);
     shader_destroy_shader(&test_shader);

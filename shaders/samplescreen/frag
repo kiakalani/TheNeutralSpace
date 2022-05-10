@@ -1,0 +1,28 @@
+#version 330 core
+uniform float time;
+
+in vec2 uv_interp;
+
+float offset = 0.0;
+float get_random_float(float v)
+{
+    offset += v;
+    return fract(sin(offset));
+}
+
+void main()
+{
+    int count_lines = 20;
+    for (int i = 0; i < count_lines; ++i)
+    {
+        vec2 circ = vec2(get_random_float(i * 5.0 + time * 0.0001), get_random_float(i * 10.0 + time * 0.0001));
+        if (length(uv_interp - circ) < 0.002 + mod(time * 0.001, 0.001))
+        {
+            float color_val = mod(time * 2, 0.5) + 0.5;
+            gl_FragColor = vec4(color_val, color_val, color_val, 1.0);
+            return;
+        }
+    }
+    discard;
+    //gl_FragColor = vec4(0.0, uv_interp.xy, 1.0);
+}

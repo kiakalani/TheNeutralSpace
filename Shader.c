@@ -1,6 +1,7 @@
 #include "Shader.h"
 #include "Component.h"
 #include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -10,6 +11,7 @@ void shader_use_shader(shader_t *s, float *camera_view, float *camera_projection
     glUseProgram(s->program_id);
     glUniformMatrix4fv(glGetUniformLocation(s->program_id, "view_mat"), 1, GL_FALSE, camera_view);
     glUniformMatrix4fv(glGetUniformLocation(s->program_id, "projection_mat"), 1, GL_FALSE, camera_projection);
+    glUniform1f(glGetUniformLocation(s->program_id, "time"), (float)glfwGetTime());
 }
 
 

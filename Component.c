@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <math.h>
 #include "Display.h"
+#include "Camera.h"
 
 void __component_sample_render(component_t *comp, shader_t *sh)
 {
@@ -22,7 +23,7 @@ void __component_sample_render(component_t *comp, shader_t *sh)
     {
         if (comp->components[i]->render) comp->components[i]->render(comp->components[i], comp->shader);
     }
-    component_face_component(comp, display->current_scene->camera);
+    //component_face_component(comp, display->current_scene->camera);
 
 }
 
@@ -135,7 +136,39 @@ void component_face_component(component_t *first, component_t *second)
 
     lmath_normalize(first->orientation, 4);
 
-    lmath_print_vector(first->orientation, 4);
+
 
 }
 
+void component_forward_vec(component_t *comp, float fwd[3])
+{
+    float vec[3];
+    memset(vec, 0, sizeof(float) * 3);
+    vec[2] = 1.0f;
+    camera_transform_vector_by_quat(comp->orientation, vec);
+    lmath_normalize(vec, 3);
+
+    memcpy(fwd, vec, sizeof(float) * 3);
+}
+
+void component_side_vec(component_t *comp, float side[3])
+{
+    float vec[3];
+    memset(vec, 0, sizeof(float) * 3);
+    vec[0] = 1.0f;
+    camera_transform_vector_by_quat(comp->orientation, vec);
+    lmath_normalize(vec, 3);
+
+    memcpy(side, vec, sizeof(float) * 3);
+}
+
+void component_up_vec(component_t *comp, float up[3])
+{
+    float vec[3];
+    memset(vec, 0, sizeof(float) * 3);
+    vec[1] = 1.0f;
+    camera_transform_vector_by_quat(comp->orientation, vec);
+    lmath_normalize(vec, 3);
+
+    memcpy(up, vec, sizeof(float) * 3);
+}

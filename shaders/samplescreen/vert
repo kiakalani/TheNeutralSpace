@@ -1,0 +1,12 @@
+#version 330 core
+
+in vec3 vertex;
+in vec2 uv;
+
+out vec2 uv_interp;
+
+void main()
+{
+    uv_interp = vec2(uv.x, 1.0-uv.y);
+    gl_Position = vec4(2.0 * vertex, 1.0);
+}

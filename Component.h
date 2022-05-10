@@ -31,6 +31,11 @@ void component_destroy_components(component_t*);
 void component_get_transformation_mat(component_t*, float*);
 
 void component_face_component(component_t*, component_t*);
-// DONE TO BE TESTED
+
+
+
+void component_forward_vec(component_t*, float[3]);
+void component_side_vec(component_t*, float[3]);
+void component_up_vec(component_t*, float[3]);
 
 #endif

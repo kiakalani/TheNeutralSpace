@@ -9,6 +9,9 @@ typedef struct camera_components
     float up[3];
     float field_of_view;
     float far_clipping_plane, near_clipping_plane;
+
+    component_t *object_to_follow;
+    
 }camera_components_t;
 
 void camera_init(component_t*, float, float, float);
@@ -27,5 +30,8 @@ void camera_move_up(component_t*, float);
 void camera_pitch(component_t*, float);
 void camera_roll(component_t*, float);
 void camera_yaw(component_t*, float);
+
+void camera_follow_object(component_t*, component_t*);
+void camera_stop_following_object(component_t*);
 // DONE. TO BE TESTED
 #endif

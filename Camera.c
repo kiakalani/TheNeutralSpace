@@ -95,15 +95,17 @@ void camera_yaw(component_t *cam, float angle)
 
 void __camera_update(component_t *cam)
 {
+    camera_components_t *cam_comps = (camera_components_t*)cam->other_components;
     float fwd[3];
     memset(fwd, 0, sizeof(float) * 3);
     fwd[2] = 1.0f;
 
+
     float up[3];
     memset(up, 0, sizeof(float) * 3);
     up[1] = 1.0f;
+    
 
-    camera_components_t *cam_comps = (camera_components_t*)cam->other_components;
     camera_transform_vector_by_quat(cam->orientation, fwd);
     camera_transform_vector_by_quat(cam->orientation, up);
 
@@ -117,6 +119,29 @@ void __camera_update(component_t *cam)
 
     memcpy(cam_comps->forward, fwd, sizeof(float) * 3);
     memcpy(cam_comps->up, up, sizeof(float) * 3);
+    
+    
+    if (cam_comps->object_to_follow)
+    {
+        float fwd_cpy[3];
+        memcpy(fwd_cpy, fwd, sizeof(float) * 3);
+        lmath_multiply_vector_float(fwd_cpy, -1.0f);
+        
+        component_t *comp = cam_comps->object_to_follow;
+        lmath_multiply_vector_float(fwd_cpy, 4.0f);
+
+        float up_cpy[3];
+        memcpy(up_cpy, up, sizeof(float) * 3);
+        lmath_multiply_vector_float(up_cpy, -1.0f);
+
+
+        memcpy(comp->position, cam->position, sizeof(float) * 3);
+        //lmath_print_vector(comp->position, 3);
+        
+        lmath_add_vectors(comp->position, fwd_cpy);   
+        lmath_add_vectors(comp->position, up_cpy);
+            
+    }
 
 }
 
@@ -208,11 +233,17 @@ void camera_get_view_mat(component_t *cam, float *mat)
     mat[6] = cam_comps->forward[1];
     mat[10] = cam_comps->forward[2];
 
-    mat[12] = lmath_dot_product(cam_comps->side, cam->position) * -1.0f;
-    mat[13] = lmath_dot_product(cam_comps->up, cam->position) * -1.0f;
-    mat[14] = lmath_dot_product(cam_comps->forward, cam->position) * -1.0f;
+    float position[3];
+    memcpy(position, cam->position, sizeof(float) * 3);
+
+
+    mat[12] = lmath_dot_product(cam_comps->side, position) * -1.0f;
+    mat[13] = lmath_dot_product(cam_comps->up, position) * -1.0f;
+    mat[14] = lmath_dot_product(cam_comps->forward, position) * -1.0f;
 
     mat[15] = 1.0f;
+
+    
     
     
 
@@ -231,4 +262,16 @@ void camera_get_projection_mat(component_t *cam, float *mat, float ratio)
     mat[11] = -1.0f;
     mat[14] = (2.0f * cam_comps->far_clipping_plane * cam_comps->near_clipping_plane) / (cam_comps->far_clipping_plane - cam_comps->near_clipping_plane);
 
+}
+
+
+void camera_follow_object(component_t *cam, component_t *obj)
+{
+    camera_components_t *comp = (camera_components_t*) cam->other_components;
+    comp->object_to_follow = obj;
+}
+void camera_stop_following_object(component_t *cam)
+{
+    camera_components_t *comp = (camera_components_t*) cam->other_components;
+    comp->object_to_follow = NULL;
 }
