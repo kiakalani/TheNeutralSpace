@@ -211,7 +211,7 @@ void __camera_handle(component_t *cam)
 void camera_init(component_t *cam, float fov, float fcp, float ncp)
 {
     memset(cam, 0, sizeof(component_t));
-    component_init(cam);
+    component_init(cam, "camera");
     camera_components_t *cam_comps = (camera_components_t*)malloc(sizeof(camera_components_t));
     memset(cam_comps, 0, sizeof(camera_components_t));
     cam_comps->far_clipping_plane = fcp;

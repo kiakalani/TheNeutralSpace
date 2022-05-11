@@ -27,7 +27,7 @@ void __component_sample_render(component_t *comp, shader_t *sh)
 
 }
 
-void component_init(component_t *component)
+void component_init(component_t *component, const char *name)
 {
     memset(component, 0, sizeof(component_t));
     component->components = (component_t**)malloc((component->size_components = 1) *sizeof(component_t*));
@@ -35,6 +35,8 @@ void component_init(component_t *component)
     component->scale[0] = 1.0f;
     component->scale[1] = 1.0f;
     component->scale[2] = 1.0f;
+    component->name = (char*)malloc(sizeof(char) * (strlen(name) + 2));
+    sprintf(component->name, "%s", name);
 
     component->render = __component_sample_render;
 
@@ -46,6 +48,7 @@ void component_destroy(component_t *comp)
 {
     if (comp->other_components) free(comp->other_components);
     free(comp->components);
+    free(comp->name);
 }
 
 

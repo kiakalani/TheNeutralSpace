@@ -13,6 +13,7 @@ typedef struct display
     double mouse_x, mouse_y;
 
     scene_t *current_scene;
+    scene_t *external_comps;
     double last_tick;
     double delta_time;
 }display_t;

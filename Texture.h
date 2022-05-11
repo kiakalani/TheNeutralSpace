@@ -8,7 +8,7 @@ typedef struct texture_components
     uint32_t texture_id;
 }texture_components_t;
 
-void texture_init(component_t*, const char*);
+void texture_init(component_t*, const char*, const char*);
 void texture_destroy(component_t*);
 
 #endif

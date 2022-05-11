@@ -13,9 +13,11 @@ void __texture_render(component_t *comp, shader_t *shader)
 
 }
 
-void texture_init(component_t *tex, const char *path)
+void texture_init(component_t *tex, const char *name, const char *path)
 {
     memset(tex, 0, sizeof(component_t));
+    component_init(tex, name);
+    
     tex->other_components = malloc(sizeof(texture_components_t));
     texture_components_t *tcomps = (texture_components_t*)tex->other_components;
     tcomps->texture_id = SOIL_load_OGL_texture(path, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);

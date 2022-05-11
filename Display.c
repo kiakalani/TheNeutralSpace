@@ -6,6 +6,7 @@
 #include "Texture.h"
 #include "Camera.h"
 #include "LMath.h"
+#include "ExternalComponents.h"
 display_t *display;
 void __display_resize(GLFWwindow *window, int w, int h)
 {
@@ -70,6 +71,9 @@ void display_init(display_t *display, const uint16_t w, const uint16_t h, const 
     for (char *i = (char*)name; *i != 0; ++i) *n++ = *i;
     __display_setup(display);
 
+    display->external_comps = (scene_t*)malloc(sizeof(scene_t));
+    scene_init(display->external_comps);
+    external_components_init();
 }
 void __rotate_object(component_t *comp)
 {
@@ -117,6 +121,10 @@ void display_destroy(display_t *display)
         scene_destroy(display->current_scene);
         free(display->current_scene);
     }
+    
+    scene_destroy(display->external_comps);
+    free(display->external_comps);
+
     glfwDestroyWindow(display->window);
     glfwTerminate();
 }
@@ -128,9 +136,9 @@ int main()
     display = &d;
     display_init(&d, 1024, 768, "This is a test");
 
-    component_t test_tex;
+    component_t test_tex = *(scene_get_component(display->external_comps, "ship_texture"));
 
-    texture_init(&test_tex, "../textures/ship.jpg");
+    //texture_init(&test_tex, "ship_texture", "../textures/ship.jpg");
 
     scene_t *scene = (scene_t*)malloc(sizeof(scene_t));
     scene_init(scene);
@@ -138,19 +146,20 @@ int main()
     shader_t test_shader;
     shader_init_shader(&test_shader, "../shaders/test/vert", "../shaders/test/frag");
     component_t test_buff;
-    // buffer_create_quad(&test_buff);
-    buffer_create_ship(&test_buff);
-    component_t test2_buff;
-    buffer_create_quad(&test2_buff);
+    test_buff = *(scene_get_component(display->external_comps, "ship_buffer"));
+    //buffer_create_quad(&test_buff);
+    //buffer_create_ship(&test_buff);
+    component_t test2_buff = *(scene_get_component(display->external_comps, "quad_buffer"));
+    //buffer_create_quad(&test2_buff);
 
     component_t *componen2 = (component_t*) malloc(sizeof(component_t));
-    component_init(componen2);
+    component_init(componen2, "test_ship");
     componen2->shader = &test_shader;
     component_add_component(componen2, &test_tex);
     component_add_component(componen2, &test2_buff);
     
     component_t *component = (component_t*)malloc(sizeof(component_t));
-    component_init(component);
+    component_init(component, "a_quad_test");
     component->shader = &test_shader;
     component_add_component(component, &test_buff);
     component_add_component(component, &test_tex);
@@ -163,7 +172,7 @@ int main()
     shader_t scr_sh;
     shader_init_shader(&scr_sh, "../shaders/samplescreen/vert", "../shaders/samplescreen/frag");
     component_t *screen_eff = (component_t*)malloc(sizeof(component_t));
-    component_init(screen_eff);
+    component_init(screen_eff, "screen_effect");
     screen_eff->shader = &scr_sh;
     component_add_component(screen_eff, &test2_buff);
 
@@ -177,10 +186,8 @@ int main()
 
     display_loop(&d);
     shader_destroy_shader(&test_shader);
-    component_destroy(&test_buff);
     display_destroy(&d);
 
-    component_destroy(&test_tex);
-    component_destroy(&test2_buff);
+    //component_destroy(&test_tex);
     return 0;
 }

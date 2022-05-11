@@ -4,6 +4,7 @@
 #include "Shader.h"
 typedef struct component
 {
+    char *name;
     float position[3];
     float scale[3];
     float orientation[4];
@@ -18,7 +19,7 @@ typedef struct component
 }component_t;
 
 
-void component_init(component_t*);
+void component_init(component_t*, const char*);
 void component_destroy(component_t*);
 
 

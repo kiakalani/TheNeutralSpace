@@ -23,9 +23,10 @@ void __buffer_render(component_t *buff, shader_t *shader)
 }
 
 
-void buffer_init(component_t *buff, float *verts, uint64_t cverts, uint32_t *faces, uint64_t cfaces)
+void buffer_init(component_t *buff, const char *name, float *verts, uint64_t cverts, uint32_t *faces, uint64_t cfaces)
 {
     memset(buff, 0, sizeof(component_t));
+    component_init(buff, name);
     buff->other_components = (void*) malloc(sizeof(buffer_components_t));
     buffer_components_t *bcomps = (buffer_components_t*)(buff->other_components);
     glGenBuffers(1, &(bcomps->vbo));
@@ -63,7 +64,7 @@ void buffer_create_quad(component_t *buff)
         0, 2, 3
     };
 
-    buffer_init(buff, vertices, sizeof(vertices) / sizeof(float), indices, sizeof(indices) / sizeof(uint32_t));
+    buffer_init(buff, "quad_buffer", vertices, sizeof(vertices) / sizeof(float), indices, sizeof(indices) / sizeof(uint32_t));
 }
 
 
@@ -122,5 +123,5 @@ void buffer_create_ship(component_t *buff)
         11, 12, 19,
         19, 20, 12
     };
-    buffer_init(buff, vertices, sizeof(vertices) / sizeof(float), indices, sizeof(indices) / sizeof(uint32_t));
+    buffer_init(buff, "ship_buffer", vertices, sizeof(vertices) / sizeof(float), indices, sizeof(indices) / sizeof(uint32_t));
 }

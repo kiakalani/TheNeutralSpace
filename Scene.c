@@ -97,3 +97,13 @@ void scene_iterate_components(scene_t *s)
     s->camera->update(s->camera);
     s->camera->handle(s->camera);
 }
+
+
+component_t *scene_get_component(scene_t *scene, const char *item_name)
+{
+    for (uint64_t i = 0; i < scene->count_components; ++i)
+    {
+        if (!strcmp(item_name, scene->components[i]->name)) return scene->components[i];
+    }
+    return NULL;
+}
