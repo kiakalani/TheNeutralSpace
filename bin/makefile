@@ -1,5 +1,5 @@
 OBJ = Display.o Camera.o Component.o LMath.o Scene.o Shader.o Buffer.o Texture.o ExternalComponents.o \
-Player.o Text.o
+Player.o Text.o Bullet.o
 PROJECT_NAME = NeutralSpace
 LIBS = -lglfw -ldl -lpthread -lX11 -lGLEW -lm -lGL -lSOIL
 all: $(OBJ)
@@ -28,3 +28,5 @@ Player.o: ../Player.h ../Player.c ../Display.h ../Component.h
 	gcc -c ../Player.c
 Text.o: ../Text.h ../Text.c ../Component.h ../Display.h
 	gcc -c ../Text.c
+Bullet.o: ../Bullet.h ../Bullet.c ../Component.h ../Display.h ../Player.h
+	gcc -c ../Bullet.c

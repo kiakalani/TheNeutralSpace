@@ -147,6 +147,7 @@ void __camera_update(component_t *cam)
 
 void __camera_handle(component_t *cam)
 {
+    camera_components_t *c_comps = (camera_components_t*)cam->other_components;
     if (glfwGetKey(display->window, GLFW_KEY_S) == GLFW_PRESS)
     {
         camera_move_forward(cam, display->delta_time);
@@ -169,27 +170,103 @@ void __camera_handle(component_t *cam)
 
     if (glfwGetKey(display->window, GLFW_KEY_J) == GLFW_PRESS)
     {
-                if (lmath_get_rotation_axis(cam->orientation, 1) > 3.141522f * -0.1f)
+        float y_axis_rot = lmath_get_rotation_axis(cam->orientation, 1);
+        float rot_add = -1.0f * (3.141522 * display->delta_time * 0.1f);
+        if (y_axis_rot > 3.141522f * -0.1f)
+        {
+            camera_pitch(cam, rot_add);
+            if (c_comps->object_to_follow)
+            {
+                float orientation[4];
+                float up_vec[3];
+                memset(up_vec, 0.0f, sizeof(float) * 3);
+                up_vec[1] = 1.0f;
+                camera_transform_vector_by_quat(cam->orientation, up_vec);
+                lmath_normalize(up_vec, 3);
+                lmath_angle_axis_quat(rot_add, up_vec[0], up_vec[1], up_vec[2], orientation);
+                float final_quat[4];
+                lmath_quat_multiply(orientation, c_comps->object_to_follow->orientation, final_quat);
+                lmath_normalize(final_quat, 4);
+                memcpy(c_comps->object_to_follow->orientation, final_quat, sizeof(float) * 4);
+            }
 
-        camera_pitch(cam, -1.0f * (3.141522 * display->delta_time * 0.1f));
+        }
+
     }
     if (glfwGetKey(display->window, GLFW_KEY_L) == GLFW_PRESS)
     {
-                if (lmath_get_rotation_axis(cam->orientation, 1) < 3.141522f * 0.1f)
+        float y_axis_rot = lmath_get_rotation_axis(cam->orientation, 1);
+        float rot_add = (3.141522 * display->delta_time * 0.1f);
+        if (y_axis_rot < 3.141522f * 0.1f)
+        {
+            camera_pitch(cam, rot_add);
+            if (c_comps->object_to_follow)
+            {
+                float orientation[4];
+                float up_vec[3];
+                memset(up_vec, 0.0f, sizeof(float) * 3);
+                up_vec[1] = 1.0f;
+                camera_transform_vector_by_quat(cam->orientation, up_vec);
+                lmath_normalize(up_vec, 3);
+                lmath_angle_axis_quat(rot_add, up_vec[0], up_vec[1], up_vec[2], orientation);
+                float final_quat[4];
+                lmath_quat_multiply(orientation, c_comps->object_to_follow->orientation, final_quat);
+                lmath_normalize(final_quat, 4);
+                memcpy(c_comps->object_to_follow->orientation, final_quat, sizeof(float) * 4);
+            }
+        }
 
-        camera_pitch(cam, (3.141522 * display->delta_time * 0.1f));
     }
 
-    // if (glfwGetKey(display->window, GLFW_KEY_K) == GLFW_PRESS)
-    // {
-    //     camera_yaw(cam, -1.0f * (3.141522 * display->delta_time * 0.1f));
-    // }
+    if (glfwGetKey(display->window, GLFW_KEY_K) == GLFW_PRESS)
+    {
+        float x_axis_rot = lmath_get_rotation_axis(cam->orientation, 0);
+        float rot_add = -1.0f * (3.141522 * display->delta_time * 0.1f);
+        if (x_axis_rot > 3.141522f * -0.05f)
+        {
+            camera_yaw(cam, rot_add);
+            if (c_comps->object_to_follow)
+            {
+                float orientation[4];
+                float up_vec[3];
+                memset(up_vec, 0.0f, sizeof(float) * 3);
+                up_vec[0] = 1.0f;
+                camera_transform_vector_by_quat(cam->orientation, up_vec);
+                lmath_normalize(up_vec, 3);
+                lmath_angle_axis_quat(rot_add, up_vec[0], up_vec[1], up_vec[2], orientation);
+                float final_quat[4];
+                lmath_quat_multiply(orientation, c_comps->object_to_follow->orientation, final_quat);
+                lmath_normalize(final_quat, 4);
+                memcpy(c_comps->object_to_follow->orientation, final_quat, sizeof(float) * 4);
+            }
+        }
+    }
 
 
-    // if (glfwGetKey(display->window, GLFW_KEY_I) == GLFW_PRESS)
-    // {
-    //     camera_yaw(cam, (3.141522 * display->delta_time * 0.1f));
-    // }
+    if (glfwGetKey(display->window, GLFW_KEY_I) == GLFW_PRESS)
+    {
+        float x_axis_rot = lmath_get_rotation_axis(cam->orientation, 0);
+        float rot_add = -1.0f * (3.141522 * display->delta_time * 0.1f);
+        if (x_axis_rot < 3.141522f * 0.05f)
+        {
+            camera_yaw(cam, (3.141522 * display->delta_time * 0.1f));
+            if (c_comps->object_to_follow)
+            {
+                float orientation[4];
+                float up_vec[3];
+                memset(up_vec, 0.0f, sizeof(float) * 3);
+                up_vec[0] = -1.0f;
+                camera_transform_vector_by_quat(cam->orientation, up_vec);
+                lmath_normalize(up_vec, 3);
+                lmath_angle_axis_quat(rot_add, up_vec[0], up_vec[1], up_vec[2], orientation);
+                float final_quat[4];
+                lmath_quat_multiply(orientation, c_comps->object_to_follow->orientation, final_quat);
+                lmath_normalize(final_quat, 4);
+                memcpy(c_comps->object_to_follow->orientation, final_quat, sizeof(float) * 4);
+            }
+        }
+        
+    }
 
     // if (glfwGetKey(display->window, GLFW_KEY_U) == GLFW_PRESS)
     // {

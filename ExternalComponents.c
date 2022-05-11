@@ -11,7 +11,7 @@ void __external_components_ship_texture()
     scene_add_component(display->external_comps, ship_texture);
 
     ship_texture = (component_t*)malloc(sizeof(component_t));
-    texture_init(ship_texture, "test_tex", "../textures/alphabets/test.png");
+    texture_init(ship_texture, "test_tex", "../textures/test.jpg");
     scene_add_component(display->external_comps, ship_texture);
 }
 
@@ -22,6 +22,12 @@ void __external_components_buffers()
     scene_add_component(display->external_comps, comp);
     comp = (component_t*) malloc(sizeof(component_t));
     buffer_create_ship(comp);
+    scene_add_component(display->external_comps, comp);
+    comp = (component_t*)malloc(sizeof(component_t));
+    buffer_create_cube(comp);
+    scene_add_component(display->external_comps, comp);
+    comp = (component_t*)malloc(sizeof(component_t));
+    buffer_create_star(comp);
     scene_add_component(display->external_comps, comp);
 }
 
@@ -41,7 +47,6 @@ void __external_components_load_text()
     for (char i = 65; i < 91; ++i)
     {
         sprintf(file_name, "../textures/alphabets/%c.png", i);
-        printf("PATH IS %s\n", file_name);
         char name[10];
         sprintf(name, "%c_tex", i);
         component_t *texture = (component_t*)malloc(sizeof(component_t));
@@ -52,7 +57,6 @@ void __external_components_load_text()
     {
         sprintf(file_name, "../textures/alphabets/%c.png", i);
         char name[10];
-                printf("PATH IS %s\n", file_name);
 
         sprintf(name, "%c_tex", i);
         component_t *texture = (component_t*)malloc(sizeof(component_t));

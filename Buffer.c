@@ -125,3 +125,69 @@ void buffer_create_ship(component_t *buff)
     };
     buffer_init(buff, "ship_buffer", vertices, sizeof(vertices) / sizeof(float), indices, sizeof(indices) / sizeof(uint32_t));
 }
+
+void buffer_create_star(component_t *st)
+{
+    float vertices[] = {
+        0.0, 0.5, 0.0,          0.5, 1.0,
+        -0.20, 0.20, 0.0,       0.20, 0.70,
+        0.20, 0.20, 0.0,        0.70, 0.70,
+        -0.5, 0.0, 0.0,         0.0, 0.5,
+        0.0, 0.0, 0.2,          0.5, 0.5,
+        0.5, 0.0, 0.0,          1.0, 0.5,
+        -0.20, -0.20, 0.0,      0.20, 0.20,
+        0.20, -0.20, 0.0,       0.70, 0.20,
+        0.0, -0.5, 0.0,         0.5, 0.0,
+        0.0, 0.0, -0.2,         0.5, 0.5
+    };
+    uint32_t faces[] = {
+        0, 1, 4,
+        0, 1, 9,
+        0, 2, 4,
+        0, 2, 9,
+        3, 1, 4,
+        3, 1, 9,
+        3, 6, 4,
+        3, 6, 9,
+        2, 4, 5,
+        2, 9, 5,
+        5, 4, 7,
+        5, 9, 7,
+        6, 4, 8,
+        6, 9, 8,
+        8, 7, 4,
+        8, 7, 9
+
+    };
+    buffer_init(st, "star_buffer", vertices, sizeof(vertices) / sizeof(float), faces, sizeof(faces) / sizeof(uint32_t));
+
+}
+void buffer_create_cube(component_t *st)
+{
+    float vertics[] = {
+        -0.5, -0.5, -0.5,  0.0, 0.0,
+        -0.5, 0.5, -0.5,   0.0, 1.0,
+        0.5, 0.5, -0.5,    1.0, 1.0,
+        0.5, -0.5, -0.5,   1.0, 0.0,
+        -0.5, -0.5, 0.5,   0.0, 0.0,
+        -0.5, 0.5, 0.5,    0.0, 1.0,
+        0.5, 0.5, 0.5,     1.0, 1.0,
+        0.5, -0.5, 0.5,    1.0, 0.0
+    };
+    uint32_t indices[] = 
+    {
+        0, 1, 2,
+        0, 2, 3,
+        0, 4, 1,
+        4, 1, 5,
+        5, 1, 2,
+        5, 2, 6,
+        4, 5, 6,
+        4, 6, 7,
+        2, 3, 7,
+        2, 7, 6,
+        4, 0, 7,
+        0, 3, 7
+    };
+    buffer_init(st, "cube_buffer", vertics, sizeof(vertics) / (sizeof(float)), indices, sizeof(indices) / sizeof(uint32_t));
+}

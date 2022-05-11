@@ -15,7 +15,7 @@ void main()
     int count_lines = 20;
     for (int i = 0; i < count_lines; ++i)
     {
-        vec2 circ = vec2(get_random_float(i * 5.0 + time * 0.0001), get_random_float(i * 10.0 + time * 0.0001));
+        vec2 circ = vec2(get_random_float(i * 5.0 + time * 0.001), get_random_float(i * 10.0 + time * 0.001));
         if (length(uv_interp - circ) < 0.002 + mod(time * 0.001, 0.001))
         {
             float color_val = mod(time * 2, 0.5) + 0.5;

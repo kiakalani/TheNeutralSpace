@@ -15,4 +15,5 @@ void buffer_destroy(component_t*);
 void buffer_create_quad(component_t*);
 void buffer_create_ship(component_t*);
 void buffer_create_star(component_t*);
+void buffer_create_cube(component_t*);
 #endif

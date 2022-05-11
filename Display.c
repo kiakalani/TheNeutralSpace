@@ -151,7 +151,7 @@ int main()
     test_buff = *(scene_get_component(display->external_comps, "ship_buffer"));
     //buffer_create_quad(&test_buff);
     //buffer_create_ship(&test_buff);
-    component_t test2_buff = *(scene_get_component(display->external_comps, "quad_buffer"));
+    component_t test2_buff = *(scene_get_component(display->external_comps, "star_buffer"));
     //buffer_create_quad(&test2_buff);
 
     component_t *componen2 = (component_t*) malloc(sizeof(component_t));
