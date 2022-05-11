@@ -3,12 +3,13 @@
 #include <stdint.h>
 typedef struct shader
 {
+    char *name;
     uint32_t program_id;
 }shader_t;
 
 
 void shader_use_shader(shader_t*, float*, float*);
-void shader_init_shader(shader_t*, const char*, const char*);
+void shader_init_shader(shader_t*, const char*, const char*, const char*);
 void shader_destroy_shader(shader_t*);
 
 

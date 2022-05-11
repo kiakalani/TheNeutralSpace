@@ -6,7 +6,7 @@ typedef struct player_components
 
 }player_components_t;
 
-void player_init(component_t*, component_t*, component_t*, component_t*);
+void player_init(component_t*);
 
 
 #endif

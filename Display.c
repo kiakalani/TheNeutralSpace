@@ -7,6 +7,8 @@
 #include "Camera.h"
 #include "LMath.h"
 #include "ExternalComponents.h"
+#include "Player.h"
+#include "Text.h"
 display_t *display;
 void __display_resize(GLFWwindow *window, int w, int h)
 {
@@ -144,7 +146,7 @@ int main()
     scene_init(scene);
     d.current_scene = scene;
     shader_t test_shader;
-    shader_init_shader(&test_shader, "../shaders/test/vert", "../shaders/test/frag");
+    shader_init_shader(&test_shader, "", "../shaders/test/vert", "../shaders/test/frag");
     component_t test_buff;
     test_buff = *(scene_get_component(display->external_comps, "ship_buffer"));
     //buffer_create_quad(&test_buff);
@@ -155,7 +157,7 @@ int main()
     component_t *componen2 = (component_t*) malloc(sizeof(component_t));
     component_init(componen2, "test_ship");
     componen2->shader = &test_shader;
-    component_add_component(componen2, &test_tex);
+    component_add_component(componen2, scene_get_component(display->external_comps, "test_tex"));
     component_add_component(componen2, &test2_buff);
     
     component_t *component = (component_t*)malloc(sizeof(component_t));
@@ -164,13 +166,13 @@ int main()
     component_add_component(component, &test_buff);
     component_add_component(component, &test_tex);
 
-    scene_add_component(scene, component);
+    //scene_add_component(scene, component);
     scene_add_component(scene, componen2);
 
     componen2->position[1] = 1.0f;
 
     shader_t scr_sh;
-    shader_init_shader(&scr_sh, "../shaders/samplescreen/vert", "../shaders/samplescreen/frag");
+    shader_init_shader(&scr_sh, "","../shaders/samplescreen/vert", "../shaders/samplescreen/frag");
     component_t *screen_eff = (component_t*)malloc(sizeof(component_t));
     component_init(screen_eff, "screen_effect");
     screen_eff->shader = &scr_sh;
@@ -178,16 +180,20 @@ int main()
 
     scene_add_component(scene, screen_eff);
 
-    scene->camera->position[2] = 5.0f;
-    camera_follow_object(scene->camera, component);
+    
     componen2->update = __rotate_object;
 
-    lmath_angle_axis_quat(-3.141522f * 0.2f, 1.0f, 0.0f, 0.0f, component->orientation);
+    component_t *player = (component_t*)malloc(sizeof(component_t));
+    player_init(player);
+    scene_add_component(scene, player);
 
+    component_t *sample_text = (component_t*)malloc(sizeof(component_t));
+    text_init(sample_text, "TEST_TEXT", "I love you");
+    scene_add_component(scene, sample_text);
+    sample_text->position[1] = 0.5f;
     display_loop(&d);
     shader_destroy_shader(&test_shader);
     display_destroy(&d);
 
-    //component_destroy(&test_tex);
     return 0;
 }

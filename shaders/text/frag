@@ -1,0 +1,12 @@
+#version 330 core
+
+uniform sampler2D tex_add;
+uniform vec3 color = vec3(0.0, 0.0, 1.0);
+in vec2 uv_interp;
+
+void main()
+{
+    vec4 pix = texture(tex_add, uv_interp);
+    if (pix.r < 0.3 || pix.g < 0.3 || pix.b < 0.3) discard;
+    gl_FragColor = vec4(color, 1.0);
+}

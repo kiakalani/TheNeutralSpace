@@ -16,6 +16,7 @@ void __component_sample_render(component_t *comp, shader_t *sh)
         printf("No shader detected; aborting the render process\n");
         return;
     }
+    
     float transformation[16];
     component_get_transformation_mat(comp, transformation);
     glUniformMatrix4fv(glGetUniformLocation(comp->shader->program_id, "transformation_mat"), 1, GL_FALSE, transformation);

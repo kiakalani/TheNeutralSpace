@@ -1,11 +1,11 @@
 OBJ = Display.o Camera.o Component.o LMath.o Scene.o Shader.o Buffer.o Texture.o ExternalComponents.o \
-
+Player.o Text.o
 PROJECT_NAME = NeutralSpace
 LIBS = -lglfw -ldl -lpthread -lX11 -lGLEW -lm -lGL -lSOIL
 all: $(OBJ)
 	gcc -o $(PROJECT_NAME) $(OBJ) $(LIBS)
 clean:
-	rm -f $(OBJ) $(PROJECT_NAME)
+	rm -f $(OBJ) $(PROJECT_NAME) vgcore.*
 Buffer.o: ../Buffer.h ../Buffer.c ../Component.h
 	gcc -c ../Buffer.c
 Display.o: ../Display.h ../Display.c ../Scene.h
@@ -24,3 +24,7 @@ Texture.o: ../Texture.h ../Texture.c ../Component.h
 	gcc -c ../Texture.c
 ExternalComponents.o: ../ExternalComponents.h ../ExternalComponents.c ../Display.h
 	gcc -c ../ExternalComponents.c
+Player.o: ../Player.h ../Player.c ../Display.h ../Component.h
+	gcc -c ../Player.c
+Text.o: ../Text.h ../Text.c ../Component.h ../Display.h
+	gcc -c ../Text.c

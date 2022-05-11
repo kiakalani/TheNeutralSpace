@@ -11,6 +11,8 @@ void scene_init(scene_t *s)
     s->camera = (component_t*) malloc(sizeof(component_t));
     printf("%X\n", s->camera);
     camera_init(s->camera, 45.0f, 1000.0f, 0.01f);
+    s->shaders = (shader_t**) malloc(sizeof(shader_t*) * (s->shaders_size = 1));
+
 }
 
 
@@ -23,7 +25,13 @@ void scene_destroy(scene_t *s)
         component_destroy(s->components[i]);
         free(s->components[i]);
     }
+    for (uint64_t i = 0; i < s->count_shaders; ++i)
+    {
+        shader_destroy_shader(s->shaders[i]);
+        free(s->shaders[i]);
+    }
     free(s->components);
+    free(s->shaders);
 
     component_destroy(s->camera);
     free(s->camera);
@@ -104,6 +112,23 @@ component_t *scene_get_component(scene_t *scene, const char *item_name)
     for (uint64_t i = 0; i < scene->count_components; ++i)
     {
         if (!strcmp(item_name, scene->components[i]->name)) return scene->components[i];
+    }
+    return NULL;
+}
+
+void scene_add_shader(scene_t *scene, shader_t *shader)
+{
+    if (scene->count_shaders + 1 >= scene->shaders_size) 
+    scene->shaders = (shader_t**)realloc(scene->shaders, sizeof(shader_t*) * (scene->shaders_size *= 2));
+    scene->shaders[(scene->count_shaders)++] = shader;
+}
+
+
+shader_t *scene_get_shader(scene_t *scene, const char *name)
+{
+    for (uint64_t i = 0; i < scene->count_shaders; ++i)
+    {
+        if (!strcmp(scene->shaders[i]->name, name)) return scene->shaders[i];
     }
     return NULL;
 }

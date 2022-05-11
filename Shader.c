@@ -71,7 +71,7 @@ uint32_t __shader_create_shader(GLenum shader_type, const char *path)
 }
 
 
-void shader_init_shader(shader_t *shader, const char *vertex_shader_path, const char *fragment_shader_path)
+void shader_init_shader(shader_t *shader, const char *name, const char *vertex_shader_path, const char *fragment_shader_path)
 {
     uint32_t vertex_shader = __shader_create_shader(GL_VERTEX_SHADER, vertex_shader_path);
     if (vertex_shader == -1) return;
@@ -98,6 +98,9 @@ void shader_init_shader(shader_t *shader, const char *vertex_shader_path, const 
     free(message);
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
+
+    shader->name = (char*)malloc(sizeof(char) * (strlen(name) + 1));
+    sprintf(shader->name, "%s", name);
     
 }
 
@@ -105,4 +108,5 @@ void shader_init_shader(shader_t *shader, const char *vertex_shader_path, const 
 void shader_destroy_shader(shader_t *shader)
 {
     glDeleteProgram(shader->program_id);
+    free(shader->name);
 }

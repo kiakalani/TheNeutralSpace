@@ -136,12 +136,10 @@ void __camera_update(component_t *cam)
 
 
         memcpy(comp->position, cam->position, sizeof(float) * 3);
-        //lmath_print_vector(comp->position, 3);
         
         lmath_add_vectors(comp->position, fwd_cpy);   
         lmath_add_vectors(comp->position, up_cpy);
 
-        //memcpy(comp->orientation, cam->orientation, sizeof(float) * 4);
             
     }
 
@@ -182,30 +180,29 @@ void __camera_handle(component_t *cam)
         camera_pitch(cam, (3.141522 * display->delta_time * 0.1f));
     }
 
-    if (glfwGetKey(display->window, GLFW_KEY_K) == GLFW_PRESS)
-    {
-        camera_yaw(cam, -1.0f * (3.141522 * display->delta_time * 0.1f));
-    }
+    // if (glfwGetKey(display->window, GLFW_KEY_K) == GLFW_PRESS)
+    // {
+    //     camera_yaw(cam, -1.0f * (3.141522 * display->delta_time * 0.1f));
+    // }
 
 
-    if (glfwGetKey(display->window, GLFW_KEY_I) == GLFW_PRESS)
-    {
-        camera_yaw(cam, (3.141522 * display->delta_time * 0.1f));
-    }
+    // if (glfwGetKey(display->window, GLFW_KEY_I) == GLFW_PRESS)
+    // {
+    //     camera_yaw(cam, (3.141522 * display->delta_time * 0.1f));
+    // }
 
-    if (glfwGetKey(display->window, GLFW_KEY_U) == GLFW_PRESS)
-    {
-        camera_roll(cam, -1.0f * (3.141522 * display->delta_time * 0.1f));
-    }
+    // if (glfwGetKey(display->window, GLFW_KEY_U) == GLFW_PRESS)
+    // {
+    //     camera_roll(cam, -1.0f * (3.141522 * display->delta_time * 0.1f));
+    // }
 
     
-    if (glfwGetKey(display->window, GLFW_KEY_O) == GLFW_PRESS)
-    {
-        camera_roll(cam, (3.141522 * display->delta_time * 0.1f));
-    }
+    // if (glfwGetKey(display->window, GLFW_KEY_O) == GLFW_PRESS)
+    // {
+    //     camera_roll(cam, (3.141522 * display->delta_time * 0.1f));
+    // }
 
-    printf("ROTATIONX: %f ROTATIONY: %f ROTATIONZ: %f\n", lmath_get_rotation_axis(cam->orientation, 0),
-    lmath_get_rotation_axis(cam->orientation, 1), lmath_get_rotation_axis(cam->orientation, 2));
+
 }
 
 void camera_init(component_t *cam, float fov, float fcp, float ncp)
@@ -224,6 +221,7 @@ void camera_init(component_t *cam, float fov, float fcp, float ncp)
     cam->other_components = (void*)cam_comps;
     cam->update = __camera_update;
     cam->handle = __camera_handle;
+    cam->position[2] = 5.0f;
 }
 
 void camera_get_view_mat(component_t *cam, float *mat)
