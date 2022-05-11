@@ -1,4 +1,5 @@
-OBJ = Display.o Camera.o Component.o LMath.o Scene.o Shader.o Buffer.o Texture.o
+OBJ = Display.o Camera.o Component.o LMath.o Scene.o Shader.o Buffer.o Texture.o ExternalComponents.o \
+
 PROJECT_NAME = NeutralSpace
 LIBS = -lglfw -ldl -lpthread -lX11 -lGLEW -lm -lGL -lSOIL
 all: $(OBJ)
@@ -21,3 +22,5 @@ Shader.o: ../Shader.h ../Shader.c
 	gcc -c ../Shader.c
 Texture.o: ../Texture.h ../Texture.c ../Component.h
 	gcc -c ../Texture.c
+ExternalComponents.o: ../ExternalComponents.h ../ExternalComponents.c ../Display.h
+	gcc -c ../ExternalComponents.c
