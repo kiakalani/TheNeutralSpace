@@ -26,5 +26,5 @@ void lmath_print_vector(float *vec, uint8_t);
 float lmath_distance(float*, float*, uint8_t);
 float lmath_length_pow2(float*, uint8_t);
 
-
+float lmath_get_rotation_axis(float[4], uint8_t);
 #endif

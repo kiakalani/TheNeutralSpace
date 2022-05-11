@@ -158,3 +158,11 @@ float lmath_distance(float *first, float *second, uint8_t d)
     free(cp);
     return dist;
 }
+
+
+float lmath_get_rotation_axis(float quat[4], uint8_t axis)
+{
+    float angle = acos(quat[0]) * 2.0f;
+    if (angle <= 0.0f && angle >= 0.0f) return 0.0f;
+    return angle * (quat[axis + 1] / sin(angle * 0.5f));
+}

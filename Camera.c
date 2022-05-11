@@ -140,6 +140,8 @@ void __camera_update(component_t *cam)
         
         lmath_add_vectors(comp->position, fwd_cpy);   
         lmath_add_vectors(comp->position, up_cpy);
+
+        //memcpy(comp->orientation, cam->orientation, sizeof(float) * 4);
             
     }
 
@@ -169,10 +171,14 @@ void __camera_handle(component_t *cam)
 
     if (glfwGetKey(display->window, GLFW_KEY_J) == GLFW_PRESS)
     {
+                if (lmath_get_rotation_axis(cam->orientation, 1) > 3.141522f * -0.1f)
+
         camera_pitch(cam, -1.0f * (3.141522 * display->delta_time * 0.1f));
     }
     if (glfwGetKey(display->window, GLFW_KEY_L) == GLFW_PRESS)
     {
+                if (lmath_get_rotation_axis(cam->orientation, 1) < 3.141522f * 0.1f)
+
         camera_pitch(cam, (3.141522 * display->delta_time * 0.1f));
     }
 
@@ -197,6 +203,9 @@ void __camera_handle(component_t *cam)
     {
         camera_roll(cam, (3.141522 * display->delta_time * 0.1f));
     }
+
+    printf("ROTATIONX: %f ROTATIONY: %f ROTATIONZ: %f\n", lmath_get_rotation_axis(cam->orientation, 0),
+    lmath_get_rotation_axis(cam->orientation, 1), lmath_get_rotation_axis(cam->orientation, 2));
 }
 
 void camera_init(component_t *cam, float fov, float fcp, float ncp)

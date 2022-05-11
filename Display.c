@@ -83,7 +83,7 @@ void __rotate_object(component_t *comp)
     // lmath_print_vector(comp->orientation, 4);
     //comp->position[2] += 0.01f;
     //printf("WORKING\n");
-    lmath_print_vector(comp->position, 3);
+    //lmath_print_vector(comp->position, 3);
 }
 
 void display_loop(display_t *display)
@@ -130,7 +130,7 @@ int main()
 
     component_t test_tex;
 
-    texture_init(&test_tex, "../textures/test.jpg");
+    texture_init(&test_tex, "../textures/ship.jpg");
 
     scene_t *scene = (scene_t*)malloc(sizeof(scene_t));
     scene_init(scene);
