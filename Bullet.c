@@ -14,7 +14,7 @@ void __bullet_update(component_t *b)
 {
     component_t *player = scene_get_component(display->current_scene, "player");
     float distance = lmath_distance(b->position, player->position, 3);
-    if (distance > DISAPPEARING_DISTANCE)
+    if (distance > DISAPPEARING_DISTANCE || b->removed)
     {
         scene_remove_component(display->current_scene, b);
         component_destroy(b);
@@ -34,9 +34,7 @@ void __bullet_update(component_t *b)
 void __bullet_on_collision(component_t *first, component_t *second)
 {
     if (!strcmp(second->name, "player")) return;
-    scene_remove_component(display->current_scene, first);
-    component_destroy(first);
-    free(first);
+    first->removed = 1;
     
 }
 

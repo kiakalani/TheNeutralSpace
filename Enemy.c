@@ -20,6 +20,11 @@ void __enemy_update(component_t *comp)
     float distance = lmath_distance(comp->position, player->position, 3);
     if (distance > ENEMY_MAXIMUM_DISTANCE || ecomps->health <= 0.0f)
     {
+        if (ecomps->health <= 0.0f)
+        {
+            player_components_t *pcomps = (player_components_t*)player->other_components;
+            pcomps->count_bullets += 5;
+        }
         scene_remove_component(display->current_scene, comp);
         component_destroy(comp);
         free(comp);
@@ -34,6 +39,19 @@ void __enemy_update(component_t *comp)
 
     lmath_multiply_vector_float(forward, ENEMY_ENEMY_SPEED * display->delta_time);
     lmath_add_vectors(comp->position, forward);
+
+
+    float y_rot[4];
+    lmath_angle_axis_quat( display->delta_time, 0.0f, 1.0f, 0.0f, y_rot);
+    float result[4];
+    lmath_quat_multiply(y_rot, comp->orientation, result);
+    lmath_normalize(result, 4);
+    memcpy(comp->orientation, result, sizeof(float) * 4);
+    lmath_angle_axis_quat( display->delta_time, 0.0f, 0.0f, 1.0f, y_rot);
+    lmath_quat_multiply(y_rot, comp->orientation, result);
+    lmath_normalize(result, 4);
+    memcpy(comp->orientation, result, sizeof(float) * 4);
+    
     
 }
 
@@ -50,7 +68,7 @@ void __enemy_on_collision(component_t *enemy, component_t *item)
     {
         player_components_t *pcomps = (player_components_t*)item->other_components;
         pcomps->health -= ((enemy_components_t*)(enemy->other_components))->damage;
-        ((enemy_components_t*)(enemy->other_components))->health = 0.0f;
+        ((enemy_components_t*)(enemy->other_components))->health = -0.1f;
     }
 
 }

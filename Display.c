@@ -10,6 +10,7 @@
 #include "Player.h"
 #include "Text.h"
 #include "Enemy.h"
+#include "GameScene.h"
 display_t *display;
 void __display_resize(GLFWwindow *window, int w, int h)
 {
@@ -77,6 +78,8 @@ void display_init(display_t *display, const uint16_t w, const uint16_t h, const 
     display->external_comps = (scene_t*)malloc(sizeof(scene_t));
     scene_init(display->external_comps);
     external_components_init();
+    float color[3] = {0.0f, 0.0f, 0.0f};
+    memcpy(display->background, color, sizeof(float) * 3);
 }
 void __rotate_object(component_t *comp)
 {
@@ -102,7 +105,7 @@ void display_loop(display_t *display)
         display->delta_time = cur_time - display->last_tick;
         if (display->delta_time <= 0.0f) display->delta_time = 0.002;
         
-        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        glClearColor(display->background[0], display->background[1], display->background[2], 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
                 scene_check_collisions(display->current_scene);
 
@@ -150,69 +153,72 @@ int main()
     display_t d;
     display = &d;
     display_init(&d, 1024, 768, "This is a test");
-
-    component_t test_tex = *(scene_get_component(display->external_comps, "ship_texture"));
-
-    //texture_init(&test_tex, "ship_texture", "../textures/ship.jpg");
-
     scene_t *scene = (scene_t*)malloc(sizeof(scene_t));
-    scene_init(scene);
+    game_scene_init(scene);
     d.current_scene = scene;
-    shader_t test_shader;
-    shader_init_shader(&test_shader, "", "../shaders/test/vert", "../shaders/test/frag");
-    component_t test_buff;
-    test_buff = *(scene_get_component(display->external_comps, "ship_buffer"));
-    //buffer_create_quad(&test_buff);
-    //buffer_create_ship(&test_buff);
-    component_t test2_buff = *(scene_get_component(display->external_comps, "star_buffer"));
-    //buffer_create_quad(&test2_buff);
+    // component_t test_tex = *(scene_get_component(display->external_comps, "ship_texture"));
 
-    component_t *componen2 = (component_t*) malloc(sizeof(component_t));
-    component_init(componen2, "test_ship");
-    componen2->shader = &test_shader;
-    component_add_component(componen2, scene_get_component(display->external_comps, "enemy_texture"));
-    component_add_component(componen2, &test2_buff);
+    // //texture_init(&test_tex, "ship_texture", "../textures/ship.jpg");
+
+    // scene_t *scene = (scene_t*)malloc(sizeof(scene_t));
+    // scene_init(scene);
+    // d.current_scene = scene;
+    // shader_t test_shader;
+    // shader_init_shader(&test_shader, "", "../shaders/test/vert", "../shaders/test/frag");
+    // component_t test_buff;
+    // test_buff = *(scene_get_component(display->external_comps, "ship_buffer"));
+    // //buffer_create_quad(&test_buff);
+    // //buffer_create_ship(&test_buff);
+    // component_t test2_buff = *(scene_get_component(display->external_comps, "star_buffer"));
+    // //buffer_create_quad(&test2_buff);
+
+    // component_t *componen2 = (component_t*) malloc(sizeof(component_t));
+    // component_init(componen2, "test_ship");
+    // componen2->shader = &test_shader;
+    // component_add_component(componen2, scene_get_component(display->external_comps, "enemy_texture"));
+    // component_add_component(componen2, &test2_buff);
     
-    component_t *component = (component_t*)malloc(sizeof(component_t));
-    component_init(component, "a_quad_test");
-    component->shader = &test_shader;
-    component_add_component(component, &test_buff);
-    component_add_component(component, &test_tex);
+    // component_t *component = (component_t*)malloc(sizeof(component_t));
+    // component_init(component, "a_quad_test");
+    // component->shader = &test_shader;
+    // component_add_component(component, &test_buff);
+    // component_add_component(component, &test_tex);
 
-    //scene_add_component(scene, component);
-    scene_add_component(scene, componen2);
-    componen2->on_collision = __sample_collision;
+    // //scene_add_component(scene, component);
+    // scene_add_component(scene, componen2);
+    // componen2->on_collision = __sample_collision;
 
-    componen2->position[1] = 1.0f;
+    // componen2->position[1] = 1.0f;
 
-    shader_t scr_sh;
-    shader_init_shader(&scr_sh, "","../shaders/samplescreen/vert", "../shaders/samplescreen/frag");
-    component_t *screen_eff = (component_t*)malloc(sizeof(component_t));
-    component_init(screen_eff, "screen_effect");
-    screen_eff->shader = &scr_sh;
-    component_add_component(screen_eff, &test2_buff);
+    // shader_t scr_sh;
+    // shader_init_shader(&scr_sh, "","../shaders/samplescreen/vert", "../shaders/samplescreen/frag");
+    // component_t *screen_eff = (component_t*)malloc(sizeof(component_t));
+    // component_init(screen_eff, "screen_effect");
+    // screen_eff->shader = &scr_sh;
+    // component_add_component(screen_eff, &test2_buff);
 
-    scene_add_component(scene, screen_eff);
+    // scene_add_component(scene, screen_eff);
 
     
-    componen2->update = __rotate_object;
+    // componen2->update = __rotate_object;
 
-    component_t *player = (component_t*)malloc(sizeof(component_t));
-    player_init(player);
-    scene_add_component(scene, player);
+    // component_t *player = (component_t*)malloc(sizeof(component_t));
+    // player_init(player);
+    // scene_add_component(scene, player);
 
-    component_t *sample_text = (component_t*)malloc(sizeof(component_t));
-    text_init(sample_text, "TEST_TEXT", "I love you");
-    scene_add_component(scene, sample_text);
-    sample_text->position[1] = 0.5f;
+    // component_t *sample_text = (component_t*)malloc(sizeof(component_t));
+    // float red[3] = {1.0f, 0.0f, 0.0f};
+    // text_init(sample_text, "TEST_TEXT", "I love you", red);
+    // scene_add_component(scene, sample_text);
+    // //sample_text->position[1] = 0.5f;
 
 
 
-    component_t *sample_enemy = (component_t*)malloc(sizeof(component_t));
-    enemy_init(sample_enemy);
-    scene_add_component(display->current_scene, sample_enemy);
+    // component_t *sample_enemy = (component_t*)malloc(sizeof(component_t));
+    // enemy_init(sample_enemy);
+    // scene_add_component(display->current_scene, sample_enemy);
     display_loop(&d);
-    shader_destroy_shader(&test_shader);
+    // shader_destroy_shader(&test_shader);
     display_destroy(&d);
 
     return 0;

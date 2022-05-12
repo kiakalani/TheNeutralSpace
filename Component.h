@@ -17,6 +17,7 @@ typedef struct component
     void (*on_collision)(struct component*, struct component*);
     void (*destroy_other_comps)(struct component*);
     shader_t *shader;
+    char removed;
 }component_t;
 
 

@@ -16,6 +16,7 @@ typedef struct display
     scene_t *external_comps;
     double last_tick;
     double delta_time;
+    float background[3];
 }display_t;
 
 void display_init(display_t*, const uint16_t, const uint16_t, const char *);
