@@ -13,6 +13,7 @@
 #include "GameScene.h"
 #include "MainMenu.h"
 #include <time.h>
+#include "GameOver.h"
 display_t *display;
 void __display_resize(GLFWwindow *window, int w, int h)
 {

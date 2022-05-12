@@ -7,7 +7,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "Bullet.h"
-#define PLAYER_HEALTH 50.0f;
+#define PLAYER_HEALTH 10.0f
 #define PLAYER_STARTING_BULLETS 25
 void __player_handle(component_t *comp)
 {

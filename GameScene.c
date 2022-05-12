@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Text.h"
 #include "Health.h"
+#include "GameOver.h"
 #define GAME_SCENE_ENEMY_TIME 10.0f
 #define COUNT_CHANGES_TO_NEUTRAL 20
 
@@ -41,6 +42,11 @@ void __game_scene_update_enemy_generator(component_t *e)
     if (ecomps->game_space == NEUTRAL)
     {
 
+        scene_t *gover = (scene_t*)malloc(sizeof(scene_t));
+        game_over_init(gover, 1);
+        scene_t *del = display->current_scene;
+        display->current_scene = gover;
+        display->to_destroy = del;
         // Player wins the game and change the scene to show that
     }
     else if (ecomps->game_space == NEGATIVE)
@@ -58,6 +64,11 @@ void __game_scene_update_enemy_generator(component_t *e)
     player_components_t *pcomps = (player_components_t*)player->other_components;
     if (pcomps->health < 0.0f)
     {
+        scene_t *gover = (scene_t*)malloc(sizeof(scene_t));
+        game_over_init(gover, 0);
+        scene_t *del = display->current_scene;
+        display->current_scene = gover;
+        display->to_destroy = del;
         // Change the scene and indicate that player loses.
     }
 }
