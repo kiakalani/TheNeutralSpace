@@ -1,5 +1,5 @@
 OBJ = Display.o Camera.o Component.o LMath.o Scene.o Shader.o Buffer.o Texture.o ExternalComponents.o \
-Player.o Text.o Bullet.o Enemy.o GameScene.o Health.o
+Player.o Text.o Bullet.o Enemy.o GameScene.o Health.o MainMenu.o GameOver.o
 PROJECT_NAME = NeutralSpace
 LIBS = -lglfw -ldl -lpthread -lX11 -lGLEW -lm -lGL -lSOIL
 all: $(OBJ)
@@ -36,3 +36,7 @@ GameScene.o: ../GameScene.h ../GameScene.c ../Display.h
 	gcc -c ../GameScene.c
 Health.o: ../Health.h ../Health.c ../Display.h ../Component.h ../Player.h
 	gcc -c ../Health.c
+MainMenu.o: ../MainMenu.h ../MainMenu.c ../Scene.h ../Display.h
+	gcc -c ../MainMenu.c
+GameOver.o: ../GameOver.h ../GameOver.c ../Scene.h ../Display.h
+	gcc -c ../GameOver.c

@@ -11,6 +11,7 @@
 #include "Text.h"
 #include "Enemy.h"
 #include "GameScene.h"
+#include "MainMenu.h"
 #include <time.h>
 display_t *display;
 void __display_resize(GLFWwindow *window, int w, int h)
@@ -88,6 +89,12 @@ void display_loop(display_t *display)
 {
     while (!glfwWindowShouldClose(display->window))
     {
+        if (display->to_destroy)
+        {
+            scene_destroy(display->to_destroy);
+            free(display->to_destroy);
+            display->to_destroy = NULL;
+        }
         double cur_time = glfwGetTime();
 
         display->delta_time = cur_time - display->last_tick;
@@ -141,9 +148,9 @@ int main()
     srand(time(NULL));
     display_t d;
     display = &d;
-    display_init(&d, 1024, 768, "This is a test");
+    display_init(&d, 1024, 768, "The Neutral Space");
     scene_t *scene = (scene_t*)malloc(sizeof(scene_t));
-    game_scene_init(scene);
+    main_menu_init(scene);
     d.current_scene = scene;
 
     display_loop(&d);

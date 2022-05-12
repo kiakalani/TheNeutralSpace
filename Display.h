@@ -14,6 +14,7 @@ typedef struct display
 
     scene_t *current_scene;
     scene_t *external_comps;
+    scene_t *to_destroy;
     double last_tick;
     double delta_time;
     float background[3];
