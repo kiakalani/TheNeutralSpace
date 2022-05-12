@@ -6,6 +6,7 @@
 #include "LMath.h"
 #include "Bullet.h"
 #include "Player.h"
+#include "GameScene.h"
 #define ENEMY_DAMAGE 2.0f
 #define ENEMY_HEALTH 4.0f
 #define ENEMY_MAXIMUM_DISTANCE 50.0f
@@ -57,16 +58,29 @@ void __enemy_update(component_t *comp)
 
 void __enemy_on_collision(component_t *enemy, component_t *item)
 {
+    char negative = 0;
+    enemy_adder_t *eadder = (enemy_adder_t*)scene_get_component(display->current_scene, "enemy_generator")->other_components;
+    negative = eadder->game_space == NEGATIVE;
     char bullet[] = "bullet_";
     if (!memcmp(item->name, bullet, sizeof(bullet) - (sizeof(char))))
     {
         bullet_components_t *bcomps = (bullet_components_t*)item->other_components;
-        enemy_components_t *ecomps = (enemy_components_t*)enemy->other_components;
-        ecomps->health -= bcomps->power;
+
+        if (negative)
+        {
+            player_components_t *pcomps = (player_components_t*)(scene_get_component(display->current_scene, "player")->other_components);
+            pcomps->health -= bcomps->power;
+        } else
+        {
+            enemy_components_t *ecomps = (enemy_components_t*)enemy->other_components;
+            ecomps->health -= bcomps->power;
+        }
+        
     }
     else if (!strcmp(item->name, "player"))
     {
         player_components_t *pcomps = (player_components_t*)item->other_components;
+        if (!negative)
         pcomps->health -= ((enemy_components_t*)(enemy->other_components))->damage;
         ((enemy_components_t*)(enemy->other_components))->health = -0.1f;
     }

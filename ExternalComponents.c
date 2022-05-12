@@ -91,6 +91,14 @@ void __external_components_health_bar()
     scene_add_component(display->external_comps, health_texture);
 }
 
+
+void __external_components_screen_effect()
+{
+    shader_t *shader = (shader_t*)malloc(sizeof(shader_t));
+    shader_init_shader(shader, "screen_shader", "../shaders/samplescreen/vert", "../shaders/samplescreen/frag");
+    scene_add_shader(display->external_comps, shader);
+}
+
 void external_components_init()
 {
     __external_components_ship_texture();
@@ -98,4 +106,5 @@ void external_components_init()
     __external_components_load_shaders();
     __external_components_load_text();
     __external_components_health_bar();
+    __external_components_screen_effect();
 }

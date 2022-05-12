@@ -8,15 +8,8 @@
 #include "Text.h"
 #include "Health.h"
 #define GAME_SCENE_ENEMY_TIME 10.0f
-#define COUNT_CHANGES_TO_NEUTRAL 10
-typedef struct enemy_adder_t
-{
-    float last_addition;
-    float last_space_change;
-    float next_space_change;
-    uint16_t count_space_changes;
-    game_space_t game_space;
-}enemy_adder_t;
+#define COUNT_CHANGES_TO_NEUTRAL 20
+
 
 
 void __game_scene_update_enemy_generator(component_t *e)
@@ -31,7 +24,7 @@ void __game_scene_update_enemy_generator(component_t *e)
     }
     if (glfwGetTime() - ecomps->last_space_change > ecomps->next_space_change)
     {
-        ecomps->next_space_change = 60.0f * ((rand() % 5) + 1);
+        ecomps->next_space_change = 10.0f * ((rand() % 5) + 1);
         ecomps->count_space_changes++;
         ecomps->last_space_change = glfwGetTime();
         if (ecomps->game_space == NEGATIVE)
@@ -78,8 +71,7 @@ void __game_scene_add_enemy_generator(scene_t *s)
     enemy_adder_t *e_comps;
     comp->other_components =(void*) (e_comps = (enemy_adder_t*)calloc(sizeof(enemy_adder_t), 1));
     e_comps->last_addition = e_comps->last_space_change = glfwGetTime();
-    e_comps->next_space_change = 60.0f * ((rand() % 5) + 1);
-
+    e_comps->next_space_change = 10.0f * ((rand() % 5) + 1);
     scene_add_component(s, comp);
 }
 
@@ -135,6 +127,16 @@ void __game_scene_add_health_bar(scene_t *s)
     scene_add_component(s, health);
 }
 
+
+void __game_scene_add_screen_effect(scene_t *s)
+{
+    component_t *comp = (component_t*)malloc(sizeof(component_t));
+    component_init(comp, "screen_effect");
+    component_add_component(comp, scene_get_component(display->external_comps, "quad_buffer"));
+    comp->shader = scene_get_shader(display->external_comps, "screen_shader");
+    scene_add_component(s, comp);
+}
+
 void game_scene_init(scene_t *s)
 {
     scene_init(s);
@@ -147,4 +149,5 @@ void game_scene_init(scene_t *s)
     __game_scene_add_enemy_generator(s);
     __game_scene_setup_bullet_text(s);
     __game_scene_add_health_bar(s);
+    __game_scene_add_screen_effect(s);
 }
