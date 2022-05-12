@@ -6,7 +6,7 @@
 #include "LMath.h"
 #include "Display.h"
 #define DISAPPEARING_DISTANCE 500.0f
-#define BULLET_SPEED 30.0f
+#define BULLET_SPEED 5.0f
 static uint64_t __bullet_current_bullet = 0;
 
 void __bullet_update(component_t *b)
@@ -28,6 +28,15 @@ void __bullet_update(component_t *b)
     lmath_multiply_vector_float(pos_add, bcomps->speed);
     lmath_add_vectors(b->position, pos_add);
 
+}
+
+
+void __bullet_on_collision(component_t *first, component_t *second)
+{
+    scene_remove_component(display->current_scene, first);
+    component_destroy(first);
+    free(first);
+    
 }
 
 void bullet_init(component_t *bullet, component_t *shooter)
@@ -58,6 +67,7 @@ void bullet_init(component_t *bullet, component_t *shooter)
 
     bullet->update = __bullet_update;
     bullet->shader = scene_get_shader(display->external_comps, "texture_shader");
+    bullet->on_collision = __bullet_on_collision;
     lmath_print_vector(fwd, 3);
     component_add_component(bullet, scene_get_component(display->external_comps, "ship_texture"));
     component_add_component(bullet, scene_get_component(display->external_comps, "cube_buffer"));

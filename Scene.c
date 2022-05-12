@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include <stdio.h>
 #include "Display.h"
+#include "LMath.h"
 void scene_init(scene_t *s)
 {
     memset(s, 0, sizeof(scene_t));
@@ -131,4 +132,34 @@ shader_t *scene_get_shader(scene_t *scene, const char *name)
         if (!strcmp(scene->shaders[i]->name, name)) return scene->shaders[i];
     }
     return NULL;
+}
+
+
+void scene_check_collisions(scene_t *s)
+{
+    for (uint64_t i = 0; i < s->count_components; ++i)
+    {
+        component_t *first_comp = s->components[i];
+        if (!first_comp->on_collision) continue;
+        for (uint64_t j = i + 1; j < s->count_components; ++j)
+        {
+            component_t *second_comp = s->components[j];
+            if (!second_comp->on_collision) continue;
+            float max_scale_st = first_comp->scale[0];
+            float max_scale_nd = second_comp->scale[0];
+            for (uint8_t k = 1; k < 3; ++k)
+            {
+                if (max_scale_st < first_comp->scale[k]) max_scale_st = first_comp->scale[k];
+                if (max_scale_nd < second_comp->scale[k]) max_scale_nd = second_comp->scale[k];
+            }
+
+            float distance_objs = lmath_distance(first_comp->position, second_comp->position, 3);
+            if (distance_objs < max_scale_nd + max_scale_st)
+            {
+                printf("DISTANCE IS %f AND FIRST %f SECOND %f\n", distance_objs, max_scale_st, max_scale_nd);
+                first_comp->on_collision(first_comp, second_comp);
+                second_comp->on_collision(second_comp, first_comp);
+            }
+        }
+    }
 }

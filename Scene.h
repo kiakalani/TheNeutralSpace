@@ -25,4 +25,6 @@ void scene_add_shader(scene_t*, shader_t*);
 shader_t *scene_get_shader(scene_t*, const char*);
 
 
+void scene_check_collisions(scene_t*);
+
 #endif

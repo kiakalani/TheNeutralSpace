@@ -14,6 +14,7 @@ typedef struct component
     void (*render)(struct component*, shader_t*);
     void (*handle)(struct component*);
     void (*update)(struct component*);
+    void (*on_collision)(struct component*, struct component*);
     void (*destroy_other_comps)(struct component*);
     shader_t *shader;
 }component_t;

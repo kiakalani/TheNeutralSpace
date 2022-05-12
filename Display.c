@@ -103,6 +103,8 @@ void display_loop(display_t *display)
         
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+                scene_check_collisions(display->current_scene);
+
         scene_iterate_components(display->current_scene);
         glfwPollEvents();
 
@@ -129,6 +131,16 @@ void display_destroy(display_t *display)
 
     glfwDestroyWindow(display->window);
     glfwTerminate();
+}
+
+
+void __sample_collision(component_t *first, component_t *second)
+{
+
+    scene_remove_component(display->current_scene, first);
+    component_destroy(first);
+    free(first);
+
 }
 
 
@@ -168,6 +180,7 @@ int main()
 
     //scene_add_component(scene, component);
     scene_add_component(scene, componen2);
+    componen2->on_collision = __sample_collision;
 
     componen2->position[1] = 1.0f;
 
