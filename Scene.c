@@ -10,7 +10,6 @@ void scene_init(scene_t *s)
     memset(s, 0, sizeof(scene_t));
     s->components = (component_t**) malloc(sizeof(component_t*) * (s->components_size = 1));
     s->camera = (component_t*) malloc(sizeof(component_t));
-    printf("%X\n", s->camera);
     camera_init(s->camera, 45.0f, 1000.0f, 0.01f);
     s->shaders = (shader_t**) malloc(sizeof(shader_t*) * (s->shaders_size = 1));
 
@@ -156,7 +155,6 @@ void scene_check_collisions(scene_t *s)
             float distance_objs = lmath_distance(first_comp->position, second_comp->position, 3);
             if (distance_objs < max_scale_nd + max_scale_st)
             {
-                printf("DISTANCE IS %f AND FIRST %f SECOND %f\n", distance_objs, max_scale_st, max_scale_nd);
                 first_comp->on_collision(first_comp, second_comp);
                 second_comp->on_collision(second_comp, first_comp);
             }

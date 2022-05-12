@@ -7,6 +7,7 @@
 #include "Display.h"
 #define DISAPPEARING_DISTANCE 500.0f
 #define BULLET_SPEED 5.0f
+#define BULLET_POWER 2.0f
 static uint64_t __bullet_current_bullet = 0;
 
 void __bullet_update(component_t *b)
@@ -21,7 +22,6 @@ void __bullet_update(component_t *b)
         return;
     }
 
-    // TODO: CHECK COLLISION DETECTION HERE
     bullet_components_t *bcomps = (bullet_components_t*)b->other_components;
     float pos_add[3];
     memcpy(pos_add, bcomps->forward, sizeof(float) * 3);
@@ -33,6 +33,7 @@ void __bullet_update(component_t *b)
 
 void __bullet_on_collision(component_t *first, component_t *second)
 {
+    if (!strcmp(second->name, "player")) return;
     scene_remove_component(display->current_scene, first);
     component_destroy(first);
     free(first);
@@ -61,6 +62,7 @@ void bullet_init(component_t *bullet, component_t *shooter)
     memcpy(bcomps->forward, fwd, sizeof(float) * 3);
 
     bcomps->speed = BULLET_SPEED * display->delta_time;
+    bcomps->power = BULLET_POWER;
 
     lmath_multiply_vector_float(fwd, 1.0f);
     lmath_add_vectors(bullet->position, fwd);
@@ -68,7 +70,6 @@ void bullet_init(component_t *bullet, component_t *shooter)
     bullet->update = __bullet_update;
     bullet->shader = scene_get_shader(display->external_comps, "texture_shader");
     bullet->on_collision = __bullet_on_collision;
-    lmath_print_vector(fwd, 3);
     component_add_component(bullet, scene_get_component(display->external_comps, "ship_texture"));
     component_add_component(bullet, scene_get_component(display->external_comps, "cube_buffer"));
 }

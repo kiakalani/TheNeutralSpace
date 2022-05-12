@@ -10,7 +10,7 @@ void __external_components_ship_texture()
     texture_init(ship_texture, "ship_texture", "../textures/ship.jpg");
     scene_add_component(display->external_comps, ship_texture);
     ship_texture = (component_t*)malloc(sizeof(component_t));
-    texture_init(ship_texture, "test_tex", "../textures/test.jpg");
+    texture_init(ship_texture, "enemy_texture", "../textures/enemy.png");
     scene_add_component(display->external_comps, ship_texture);
 }
 

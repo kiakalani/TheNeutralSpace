@@ -9,6 +9,7 @@
 #include "ExternalComponents.h"
 #include "Player.h"
 #include "Text.h"
+#include "Enemy.h"
 display_t *display;
 void __display_resize(GLFWwindow *window, int w, int h)
 {
@@ -169,7 +170,7 @@ int main()
     component_t *componen2 = (component_t*) malloc(sizeof(component_t));
     component_init(componen2, "test_ship");
     componen2->shader = &test_shader;
-    component_add_component(componen2, scene_get_component(display->external_comps, "test_tex"));
+    component_add_component(componen2, scene_get_component(display->external_comps, "enemy_texture"));
     component_add_component(componen2, &test2_buff);
     
     component_t *component = (component_t*)malloc(sizeof(component_t));
@@ -204,6 +205,12 @@ int main()
     text_init(sample_text, "TEST_TEXT", "I love you");
     scene_add_component(scene, sample_text);
     sample_text->position[1] = 0.5f;
+
+
+
+    component_t *sample_enemy = (component_t*)malloc(sizeof(component_t));
+    enemy_init(sample_enemy);
+    scene_add_component(display->current_scene, sample_enemy);
     display_loop(&d);
     shader_destroy_shader(&test_shader);
     display_destroy(&d);
