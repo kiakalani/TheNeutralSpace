@@ -1,0 +1,13 @@
+#version 330 core
+in vec3 vertex;
+in vec2 uv;
+
+out vec2 uv_interp;
+
+uniform mat4 transformation_mat;
+
+void main()
+{
+    gl_Position = transformation_mat * vec4(vertex, 1.0);
+    uv_interp  = vec2(uv.x, 1.0 - uv.y);
+}

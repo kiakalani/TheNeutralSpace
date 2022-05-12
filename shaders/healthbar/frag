@@ -1,0 +1,13 @@
+#version 330 core
+
+in vec2 uv_interp;
+uniform sampler2D tex_add;
+
+uniform float health_frac;
+
+void main()
+{
+    vec4 pixel = texture(tex_add, uv_interp);
+    if (health_frac < uv_interp.x) pixel *= vec4(1.0, 1.0, 0.0, 1.0);
+    gl_FragColor = pixel;
+}

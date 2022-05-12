@@ -79,10 +79,23 @@ void __external_components_load_text()
     scene_add_component(display->external_comps, texture);
 }
 
+
+void __external_components_health_bar()
+{
+    shader_t *health_shader = (shader_t*)malloc(sizeof(shader_t));
+    shader_init_shader(health_shader, "health_shader", "../shaders/healthbar/vert", "../shaders/healthbar/frag");
+    scene_add_shader(display->external_comps, health_shader);
+
+    component_t *health_texture = (component_t*)malloc(sizeof(component_t));
+    texture_init(health_texture, "health_texture", "../textures/health.png");
+    scene_add_component(display->external_comps, health_texture);
+}
+
 void external_components_init()
 {
     __external_components_ship_texture();
     __external_components_buffers();
     __external_components_load_shaders();
     __external_components_load_text();
+    __external_components_health_bar();
 }

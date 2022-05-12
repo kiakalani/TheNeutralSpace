@@ -9,7 +9,7 @@
 #define ENEMY_DAMAGE 2.0f
 #define ENEMY_HEALTH 4.0f
 #define ENEMY_MAXIMUM_DISTANCE 50.0f
-#define ENEMY_ENEMY_SPEED 0.2f
+#define ENEMY_ENEMY_SPEED 1.0f
 static uint64_t __enemy_current_enemy = 0;
 
 void __enemy_update(component_t *comp)

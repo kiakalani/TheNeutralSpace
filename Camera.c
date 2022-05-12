@@ -150,23 +150,23 @@ void __camera_handle(component_t *cam)
     camera_components_t *c_comps = (camera_components_t*)cam->other_components;
     if (glfwGetKey(display->window, GLFW_KEY_S) == GLFW_PRESS)
     {
-        camera_move_forward(cam, display->delta_time);
+        camera_move_forward(cam, display->delta_time * 3.0f);
     }
     if (glfwGetKey(display->window, GLFW_KEY_W) == GLFW_PRESS)
     {
-        camera_move_forward(cam, -1.0f * display->delta_time);
+        camera_move_forward(cam, -3.0f * display->delta_time);
     }
     if (glfwGetKey(display->window, GLFW_KEY_A) == GLFW_PRESS)
     {
-        camera_move_right(cam, -1.0f * display->delta_time);
+        camera_move_right(cam, -3.0f * display->delta_time);
     }
     if (glfwGetKey(display->window, GLFW_KEY_D) == GLFW_PRESS)
-        camera_move_right(cam,  display->delta_time);
+        camera_move_right(cam,  display->delta_time * 3.0f);
 
     if (glfwGetKey(display->window, GLFW_KEY_Q) == GLFW_PRESS)
-        camera_move_up(cam, display->delta_time);
+        camera_move_up(cam, display->delta_time * 3.0f);
     if (glfwGetKey(display->window, GLFW_KEY_E) == GLFW_PRESS)
-        camera_move_up(cam, -1.0f * display->delta_time);
+        camera_move_up(cam, -3.0f * display->delta_time);
 
     if (glfwGetKey(display->window, GLFW_KEY_J) == GLFW_PRESS)
     {
@@ -268,16 +268,7 @@ void __camera_handle(component_t *cam)
         
     }
 
-    // if (glfwGetKey(display->window, GLFW_KEY_U) == GLFW_PRESS)
-    // {
-    //     camera_roll(cam, -1.0f * (3.141522 * display->delta_time * 0.1f));
-    // }
-
     
-    // if (glfwGetKey(display->window, GLFW_KEY_O) == GLFW_PRESS)
-    // {
-    //     camera_roll(cam, (3.141522 * display->delta_time * 0.1f));
-    // }
 
 
 }

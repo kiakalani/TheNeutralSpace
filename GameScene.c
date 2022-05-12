@@ -6,7 +6,7 @@
 #include "Enemy.h"
 #include "Player.h"
 #include "Text.h"
-
+#include "Health.h"
 #define GAME_SCENE_ENEMY_TIME 10.0f
 #define COUNT_CHANGES_TO_NEUTRAL 10
 typedef struct enemy_adder_t
@@ -48,7 +48,7 @@ void __game_scene_update_enemy_generator(component_t *e)
     if (ecomps->game_space == NEUTRAL)
     {
 
-        // GAME OVER AND CHANGE THE SCENE
+        // Player wins the game and change the scene to show that
     }
     else if (ecomps->game_space == NEGATIVE)
     {
@@ -58,6 +58,14 @@ void __game_scene_update_enemy_generator(component_t *e)
     else
     {
         memset(display->background, 0, sizeof(float) * 3);
+    }
+
+
+    component_t *player = scene_get_component(display->current_scene, "player");
+    player_components_t *pcomps = (player_components_t*)player->other_components;
+    if (pcomps->health < 0.0f)
+    {
+        // Change the scene and indicate that player loses.
     }
 }
 
@@ -112,13 +120,31 @@ void __game_scene_setup_bullet_text(scene_t *s)
     text->position[1] = -0.75f;
 }
 
+void __game_scene_add_initial_enemy()
+{
+    component_t *enemy = (component_t*) malloc(sizeof(component_t));
+    enemy_init(enemy);
+    scene_add_component(display->current_scene, enemy);
+}
+
+
+void __game_scene_add_health_bar(scene_t *s)
+{
+    component_t *health = (component_t*)malloc(sizeof(component_t));
+    health_init(health);
+    scene_add_component(s, health);
+}
+
 void game_scene_init(scene_t *s)
 {
     scene_init(s);
     scene_t *cur_scene = display->current_scene;
     display->current_scene = s;
     __game_scene_add_player(s);
+    __game_scene_add_initial_enemy();
+
     display->current_scene = cur_scene;
     __game_scene_add_enemy_generator(s);
     __game_scene_setup_bullet_text(s);
+    __game_scene_add_health_bar(s);
 }
